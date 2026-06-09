@@ -1,3 +1,4 @@
+# new runs
 # context-granularity
 
 We build on [context-shapes-language](https://github.com/kristinakobrock/context-shapes-language).
@@ -9,7 +10,7 @@ We used Python 3.9.15 and PyTorch 1.13.0. Generally, the minimal requirements ar
 1. (optional) Create a new conda environement:
 ```
 conda create --name emergab python=3.9
-conda activate emergab
+
 ```
 2. EGG can be installed as a package to be used as a library (see [here](https://github.com/facebookresearch/EGG#installing-egg) for more options):
 ```
