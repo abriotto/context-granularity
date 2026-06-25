@@ -2,7 +2,8 @@
 .DS_Store
 *.pyc
 *.tar
-**/interaction*
+**/interactions*
+!interactions.zip
 *.ds
 grid_search/07-03_new/
 grid_search/07-02/
