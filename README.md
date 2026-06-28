@@ -1,4 +1,4 @@
-# new runs
+# new
 # context-granularity
 
 We build on [context-shapes-language](https://github.com/kristinakobrock/context-shapes-language).

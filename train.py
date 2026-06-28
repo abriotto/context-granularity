@@ -2,6 +2,7 @@
 # who based on https://github.com/XeniaOhmer/hierarchical_reference_game/blob/master/train.py
 # and https://github.com/jayelm/emergent-generalization/blob/master/code/train.py
 
+
 import argparse
 import torch
 #print(torch.__version__)
@@ -20,7 +21,6 @@ from archs import Sender, Receiver
 from archs_mu_goodman import Speaker, Listener
 import feature
 import itertools
-
 
 SPLIT = (0.6, 0.2, 0.2)
 SPLIT_ZERO_SHOT = (0.75, 0.25)
