@@ -13,7 +13,6 @@ debugpy==1.8.0
 decorator==5.1.1
 docker-pycreds==0.4.0
 editdistance==0.6.2
-EGG @ git+https://github.com/facebookresearch/EGG.git@18d72d86cf9706e7ad82f94719b56accd288e59a
 exceptiongroup==1.1.3
 executing==2.0.1
 filelock==3.13.1
