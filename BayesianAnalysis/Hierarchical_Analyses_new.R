@@ -2,7 +2,7 @@
 ## Description: Analyses reported in section 3.3 of the paper
 ## Author: Kristina Kobrock
 ## Contact: kristina.kobrock@uni-osnabrueck.de
-## Last Edit: 2026-05-27
+## Last Edit: 2026-07-01
 
 setwd(normalizePath(dirname(rstudioapi::getActiveDocumentContext()$path)))
 
@@ -18,6 +18,7 @@ setwd(normalizePath(dirname(rstudioapi::getActiveDocumentContext()$path)))
 library(tidyverse)
 library(brms)
 library(dplyr)
+library(bayestestR)
 
 # NMI----------------------------
 
@@ -26,7 +27,7 @@ df_NMI <- read.csv('data_for_R_NMI_hierarchical.csv')
 df_NMI <- df_NMI %>%
   dplyr::rename(entropy = value)
 
-df_NMI$condition <- factor(df_NMI$condition, levels = c("mixed", "fine", "coarse"))
+df_NMI$condition <- factor(df_NMI$condition, levels = c("sampled_context", "fine", "coarse"))
 #contrasts(df_NMI$condition) <- contr.sum(2)
 fit_NMI_hier <- brm(entropy ~ condition * hierarchy_level + (1|dataset),
                     data=df_NMI,
@@ -41,8 +42,6 @@ fit_NMI_hier <- brm(entropy ~ condition * hierarchy_level + (1|dataset),
 summary(fit_NMI_hier)
 pp_check(fit_NMI_hier)
 describe_posterior(fit_NMI_hier, rope_range = rope_range(fit_NMI_hier))
-# no difference between fine and mixed
-# significant difference between coarse and mixed
 
 # difference between NMI scores for mixed vs. fine condition and specific concepts:
 # NMI----------------------------
@@ -80,9 +79,6 @@ hdiDiff_specific <- round(hdi(BEST_specific_fine_mixed_NMI_hierarchical$mu1 - BE
 plotAll(BEST_specific_fine_mixed_NMI_hierarchical)
 plot(BEST_specific_fine_mixed_NMI_hierarchical, ROPE=rope_NMI)
 summary(BEST_specific_fine_mixed_NMI_hierarchical)
-# CrI does not include 0
-# 99% probability that the difference in means is larger than 0 (pd)
-# 1% in ROPE
 
 
 # effectiveness----------------------------
@@ -99,7 +95,11 @@ agg_effectiveness <- df_effectiveness %>%
 grand_mean_effectiveness <- agg_effectiveness$mean
 grand_sd_effectiveness <- agg_effectiveness$sd
 
-df_effectiveness$condition <- factor(df_effectiveness$condition, levels = c("mixed", "fine", "coarse"))
+df_effectiveness %>% 
+  group_by(condition, hierarchy_level) %>% 
+  summarize(mean = mean(entropy))
+
+df_effectiveness$condition <- factor(df_effectiveness$condition, levels = c("sampled_context", "fine", "coarse"))
 #contrasts(df_NMI$condition) <- contr.sum(2)
 fit_effectiveness_hier <- brm(entropy ~ condition * hierarchy_level + (1|dataset),
                     data=df_effectiveness,
@@ -114,8 +114,6 @@ fit_effectiveness_hier <- brm(entropy ~ condition * hierarchy_level + (1|dataset
 summary(fit_effectiveness_hier)
 pp_check(fit_effectiveness_hier)
 describe_posterior(fit_effectiveness_hier, rope_range = rope_range(fit_effectiveness_hier))
-# no difference between fine and mixed
-# significant difference between coarse and mixed
 
 # consistency----------------------------
 
@@ -131,7 +129,12 @@ agg_consistency <- df_consistency %>%
 grand_mean_consistency <- agg_consistency$mean
 grand_sd_consistency <- agg_consistency$sd
 
-df_consistency$condition <- factor(df_consistency$condition, levels = c("mixed", "fine", "coarse"))
+df_consistency$condition <- factor(df_consistency$condition, levels = c("sampled_context", "fine", "coarse"))
+
+df_consistency %>% 
+  group_by(condition, hierarchy_level) %>% 
+  summarize(mean = mean(entropy))
+
 #contrasts(df_NMI$condition) <- contr.sum(2)
 fit_consistency_hier <- brm(entropy ~ condition * hierarchy_level + (1|dataset),
                               data=df_consistency,
@@ -146,6 +149,3 @@ fit_consistency_hier <- brm(entropy ~ condition * hierarchy_level + (1|dataset),
 summary(fit_consistency_hier)
 describe_posterior(fit_consistency_hier, rope_range = rope_range(fit_consistency_hier))
 pp_check(fit_consistency_hier)
-# difference between fine and mixed
-# significant difference between coarse and mixed
-# significant effects of hierarchy level in fine and coarse condition

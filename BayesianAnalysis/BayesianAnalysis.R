@@ -1,3 +1,9 @@
+## Title: Analysis of entropy scores per concept hierarchy level
+## Description: Analyses reported in section 3.2 of the paper
+## Author: Kristina Kobrock
+## Contact: kristina.kobrock@uni-osnabrueck.de
+## Last Edit: 2026-07-01
+
 setwd(normalizePath(dirname(rstudioapi::getActiveDocumentContext()$path)))
 df <- read.csv('data_for_R.csv')
 
@@ -22,7 +28,7 @@ df_NMI_fine <- df_NMI %>%
   filter(condition == 'fine')
 
 df_NMI_mixed <- df_NMI %>% 
-  filter(condition == 'mixed')
+  filter(condition == 'sampled_context')
 
 df_NMI_coarse <- df_NMI %>% 
   filter(condition == 'coarse')
@@ -58,7 +64,7 @@ plot(BEST_NMI_fine,ROPE=rope)
 summary(BEST_NMI_fine)
 # CrI does not include 0
 # 100% probability that the difference in means is larger than 0 (pd)
-# 1% in ROPE
+# 0% in ROPE
 
 Diff_coarse <- (BEST_NMI_coarse$mu1 - BEST_NMI_coarse$mu2)
 meanDiff_coarse <- round(mean(Diff_coarse), 3)
@@ -85,7 +91,7 @@ df_eff_fine <- df_effectiveness %>%
   filter(condition == 'fine')
 
 df_eff_mixed <- df_effectiveness %>% 
-  filter(condition == 'mixed')
+  filter(condition == 'sampled_context')
 
 df_eff_coarse <- df_effectiveness %>% 
   filter(condition == 'coarse')
@@ -120,8 +126,8 @@ plotAll(BEST_eff_fine)
 plot(BEST_eff_fine,ROPE=rope)
 summary(BEST_eff_fine)
 # CrI includes 0
-# 85% probability that the difference in means is larger than 0 (pd)
-# 46% in ROPE
+# 99.1% probability that the difference in means is larger than 0 (pd)
+# 8% in ROPE
 
 Diff_coarse <- (BEST_eff_coarse$mu1 - BEST_eff_coarse$mu2)
 meanDiff_coarse <- round(mean(Diff_coarse), 3)
@@ -148,7 +154,7 @@ df_cons_fine <- df_consistency %>%
   filter(condition == 'fine')
 
 df_cons_mixed <- df_consistency %>% 
-  filter(condition == 'mixed')
+  filter(condition == 'sampled_context')
 
 df_cons_coarse <- df_consistency %>% 
   filter(condition == 'coarse')
@@ -193,8 +199,8 @@ plotAll(BEST_cons_coarse)
 plot(BEST_cons_coarse,ROPE=rope)
 summary(BEST_cons_coarse)
 # CrI does not include 0
-# 100% probability that the difference in means is larger than 0 (pd)
-# 0% in ROPE
+# 99.7% probability that the difference in means is larger than 0 (pd)
+# 1% in ROPE
 
 # save all models for reproducibility
 write.csv(BEST_cons_fine, "BEST_cons_fine.csv", row.names=FALSE, quote=FALSE) 
